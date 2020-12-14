@@ -234,6 +234,7 @@ namespace ProyectoA1T121
             public int[] ListaServicios = new int[5];
 
         }
+
         static void LecturaEmpresas(ListaEmpresas lista)
         {
 
@@ -244,7 +245,7 @@ namespace ProyectoA1T121
                 Empresas aux = lista.empresas[i];
                 Console.WriteLine("Codigo: {0}, Desarrollador: {1}, representanteLegal: {2}, numeroServicios:{3}",
                     aux.Codigo, aux.NombreEmpresa, aux.RepresentanteLegal, aux.NumeroServicios);
-                i = i + 1;
+                i++;
             }
         }
 
@@ -271,7 +272,7 @@ namespace ProyectoA1T121
                 }
                 f.WriteLine(); //saltamos la linea después de los servicios de 1 aplicación
 
-                i = i++;
+                 i++;
             }
             f.Close();
         }
@@ -280,50 +281,56 @@ namespace ProyectoA1T121
         
 
         //Añade una aplicación móvil a la lista
-        static int AddEmpresas(ListaEmpresas lista, Empresas u)
+        static int AddEmpresas(ListaEmpresas lista, Empresas aux)
         {
             if (lista.num < 100)
             {
-                lista.empresas[lista.num] = u;
-                lista.num = lista.num + 1;
+                lista.empresas[lista.num] = aux;
+                lista.num += 1;
             }
 
 
 
+
+            return 0;
 
         }
 
-        //Dar de alta o eliminar
-        static int ModificarServicios(ListaEmpresas lista, Empresas u)
+        //Dar de alta o eliminar un servicio 
+        static int ModificarServicios(ListaEmpresas lista, Empresas aux)
         {
             if (lista.num < 100)
             {
-                lista.empresas[lista.num] = u;
-                lista.num = lista.num + 1;
+                lista.empresas[lista.num] = aux;
+                lista.num += 1;
 
             }
 
-            Console.WriteLine("Ecoja la tarea que desea realizar");
-            //Selection 
+            //Interfaz con las opciones para el usuario 
+            Console.WriteLine("Ecoja la tarea que desea realizar:");
+            Console.Write("\td Eliminar un servicio \t Añadir un servicio \n");
 
+            char inputUser = Convert.ToChar(Console.ReadLine());
 
+             if(inputUser == 'd')
+                {
+                //Suprimir o eliminar un servicio 
 
-
-            if (/*option1*/)
-            {
-                /*Code Service*/
-            }
+                return 1;
+                }
             else
             {
-                if (/*option2*/)
-                {
-                    /*function add*/
+                if(inputUser == 'a'){
+                    return 0;
+                }
+                else{
+                    Console.WriteLine("Error");
+                    Thread.Sleep(2000);
+                    Console.Clear();
+                    Main();
+                    return -1 ;
                 }
             }
-
         }
-
-
-
     }
 }
