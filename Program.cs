@@ -16,6 +16,7 @@ namespace ProyectoA1T121
             int res = CargarLista(miListaEmpresas);
             if (res == -1)
             {
+                
                 Console.WriteLine("The file was not found.");
                 Console.ReadKey();
             }
@@ -178,7 +179,8 @@ namespace ProyectoA1T121
         {
             try
             {
-                StreamReader f = new StreamReader("C:/Users/PC-V/Documents/Luigelo/UPC/TELECOS/SEMESTRE 1/IO/ProyectoFinal/bin/Debug/datos.txt");
+                string path = Directory.GetCurrentDirectory();
+                StreamReader f = new StreamReader(path + "/../datos.txt");
                 int n = Convert.ToInt32(f.ReadLine());
                 int i = 0;
                 while (i < n)
@@ -186,7 +188,8 @@ namespace ProyectoA1T121
                     Empresas u = new Empresas();
                     string linea = f.ReadLine();
                     string[] trozos = linea.Split(',');
-
+                    //Error nos salimos fuera del indice de array 
+                    //Posible solucion defir el numero de empresas y los servicios
                     u.Codigo = Convert.ToInt32(trozos[0]);
                     u.NombreEmpresa = trozos[1];
                     u.RepresentanteLegal = trozos[2];
@@ -280,7 +283,7 @@ namespace ProyectoA1T121
 
         
 
-        //Añade una aplicación móvil a la lista
+        //Añade una empresa a la lista
         static int AddEmpresas(ListaEmpresas lista, Empresas aux)
         {
             if (lista.num < 100)
@@ -290,7 +293,37 @@ namespace ProyectoA1T121
             }
 
 
-
+            Console.WriteLine("Ponga el código de la nueva empresa:");
+            char codigoEmpresa = Convert.ToChar(Console.ReadLine());
+            //Insertar variable dentro de array
+            Console.WriteLine("Ponga el nombre del representante de la nueva empresa:");
+            string nombreRepresentante = Console.ReadLine();
+            //Insertar variable dentro de array
+            Console.WriteLine("Añada los servicios para la nueva empresa:");
+            int numeroServicios = Convert.ToInt32(Console.ReadLine());
+            //Insertar variable dentro de array
+            if (numeroServicios > 0)
+            {
+                int i= 0;
+                int[] idServicios = new int[numeroServicios];
+                while (i <= numeroServicios)
+                {
+                    Console.WriteLine("Añada el id del servicio número {0}:", i+1);
+                     idServicios[i] = Convert.ToInt32(Console.ReadLine());
+                    //Insertar variable dentro de array
+                    i++;
+                }
+                //Insertar array dentro del fichero datos.txt teniendo 
+                //en cuenta que no puede repetirse el codigo de empresa
+                Console.WriteLine("Su empresa ha sido añadida correctamente");
+            }
+            else
+            {
+                Console.WriteLine("Error ha introducido un número de servicios no válido");
+                Thread.Sleep(2000);
+                Console.Clear();
+                Main();
+            }
 
             return 0;
 
@@ -328,6 +361,7 @@ namespace ProyectoA1T121
                     Thread.Sleep(2000);
                     Console.Clear();
                     Main();
+
                     return -1 ;
                 }
             }
