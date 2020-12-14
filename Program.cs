@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading;
 
 namespace ProyectoA1T121
 {
@@ -23,17 +24,15 @@ namespace ProyectoA1T121
                 Console.WriteLine("File read correctly, press any button to continue.");
                 // Ask the user to choose an option.
                 Console.WriteLine("Choose your language to continue");
-                Console.Write("\t1 - English");
-                Console.Write("\t2 - Español");
-                Console.Write("\t3 - Català\n");
+                Console.Write("\t1 - English \t2 - Español \t3 - Català \n");
                 Console.WriteLine("Select:");
-
                 switch (Console.ReadLine())
                 {
                     case "1":
                         {
+                            Console.Clear();
                             Console.WriteLine("Welcome to A1T121 project");
-                            Console.WriteLine("\ta - Leer fichero por pantalla");
+                            Console.WriteLine("\ta - Read file");
                             Console.WriteLine("\t2 - Español");
                             Console.WriteLine("\t3 - Català");
                             Console.Write("- Select an option:");
@@ -44,7 +43,7 @@ namespace ProyectoA1T121
                                 case "A":
                                     {
                                         CargarLista(miListaEmpresas);
-                                        
+
                                     }
                                     break;
                                 case "b":
@@ -60,11 +59,22 @@ namespace ProyectoA1T121
                                     }
                                     break;
 
+                                default:
+                                    {
+                                        Console.Write("Error, the introduced parameter is not recognized\n The program will be restart automaticaly:");
+                                        Thread.Sleep(2000);
+                                        Console.Clear();
+                                        Main();
+                                    }
+                                    break;
+
+
                             }
                         }
                         break;
                     case "2":
                         {
+                            Console.Clear();
                             Console.WriteLine("Bienvenido al proyecto A1T121");
                             Console.WriteLine("\ta - Leer fichero por pantalla");
                             Console.WriteLine("\t2 - Español");
@@ -72,22 +82,35 @@ namespace ProyectoA1T121
                             Console.Write("- Escoje una función:");
                             switch (Console.ReadLine())
                             {
+                                //Definir caso
                                 case "a":
                                 case "A":
                                     {
 
                                     }
                                     break;
+                                //Definir caso
                                 case "b":
                                 case "B":
                                     {
 
                                     }
                                     break;
+                                //Definir caso
                                 case "c":
                                 case "C":
                                     {
 
+                                    }
+                                    break;
+                                //Valor error
+                                default:
+                                    {
+                                        Console.Write("Error, El parámetro introducido no es correcto \n " +
+                                                        "El programa se reiniciará automáticamente");
+                                        Thread.Sleep(2000);
+                                        Console.Clear();
+                                        Main();
                                     }
                                     break;
 
@@ -96,8 +119,9 @@ namespace ProyectoA1T121
                         break;
                     case "3":
                         {
+                            Console.Clear();
                             Console.WriteLine("Benvingut al projecte A1T121");
-                            Console.WriteLine("\ta - Leer fichero por pantalla");
+                            Console.WriteLine("\ta - Llegir fitxer");
                             Console.WriteLine("\t2 - Español");
                             Console.WriteLine("\t3 - Català");
                             Console.Write("- Escull una funció");
@@ -121,17 +145,30 @@ namespace ProyectoA1T121
 
                                     }
                                     break;
+                                //Valor error
+                                default:
+                                    {
+                                        Console.Write("Error, El paràmetre introduit es incorrecte \n " +
+                                                        "El programa se reiniciará automáticamente");
+                                        Thread.Sleep(2000);
+                                        Console.Clear();
+                                        Main();
+                                    }
+                                    break;
 
                             }
                         }
-                   break;
+                        break;
+
                     default:
                         {
-                            Console.WriteLine("No se reconoce el parámetro seleccionado, presione una tecla para iniciar el programa de nuevo");
-                            Console.ReadKey();
+                            Console.Write("Error, the introduced parameter is not recognized\n The program will be restart automaticaly:");
+                            Thread.Sleep(2000);
+                            Console.Clear();
                             Main();
                         }
                         break;
+
                 }
             }
         }
@@ -220,7 +257,7 @@ namespace ProyectoA1T121
             i = 0;
             while (i < lista.num)
             {
-                
+
                 f.WriteLine("{0} {1} {2} {3} ", lista.empresas[i].Codigo, lista.empresas[i].NombreEmpresa, lista.empresas[i].RepresentanteLegal,
                     lista.empresas[i].NumeroServicios);
 
@@ -239,7 +276,52 @@ namespace ProyectoA1T121
             f.Close();
         }
 
-       
+
+        
+
+        //Añade una aplicación móvil a la lista
+        static int AddEmpresas(ListaEmpresas lista, Empresas u)
+        {
+            if (lista.num < 100)
+            {
+                lista.empresas[lista.num] = u;
+                lista.num = lista.num + 1;
+            }
+
+
+
+
+        }
+
+        //Dar de alta o eliminar
+        static int ModificarServicios(ListaEmpresas lista, Empresas u)
+        {
+            if (lista.num < 100)
+            {
+                lista.empresas[lista.num] = u;
+                lista.num = lista.num + 1;
+
+            }
+
+            Console.WriteLine("Ecoja la tarea que desea realizar");
+            //Selection 
+
+
+
+
+            if (/*option1*/)
+            {
+                /*Code Service*/
+            }
+            else
+            {
+                if (/*option2*/)
+                {
+                    /*function add*/
+                }
+            }
+
+        }
 
 
 
