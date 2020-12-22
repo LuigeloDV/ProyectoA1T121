@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*
+
+   ###       ##   ########    ##    #######     ##   
+  ## ##    ####      ##     ####   ##     ##  ####   
+ ##   ##     ##      ##       ##          ##    ##   
+##     ##    ##      ##       ##    #######     ##   
+#########    ##      ##       ##   ##           ##   
+##     ##    ##      ##       ##   ##           ##   
+##     ##  ######    ##     ###### #########  ###### 
+
+    Version: 0.0.3
+    Authors: Marta Contreras, Luigelo Davila & Carles Villacañas
+    Repo: https://github.com/LuigeloDV/ProyectoA1T121
+
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,225 +25,8 @@ namespace ProyectoA1T121
 {
     public class Program
     {
-        static void Main()
-        {
-            //Definición
-            ListaEmpresas miListaEmpresas = new ListaEmpresas();
-            int res = CargarLista(miListaEmpresas);
-            if (res == -1)
-            {
-                
-                Console.WriteLine("The file was not found.");
-                Console.ReadKey();
-            }
-            else
-            {
-                Console.WriteLine("File read correctly, press any button to continue.");
-                // Ask the user to choose an option.
-                Console.WriteLine("Choose your language to continue");
-                Console.Write("\t1 - English \t2 - Español \t3 - Català \n");
-                Console.WriteLine("Select:");
-                switch (Console.ReadLine())
-                {
-                    case "1":
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Welcome to A1T121 project");
-                            Console.WriteLine("\ta - Read file");
-                            Console.WriteLine("\t2 - Español");
-                            Console.WriteLine("\t3 - Català");
-                            Console.Write("- Select an option:");
 
-                            switch (Console.ReadLine())
-                            {
-                                case "a":
-                                case "A":
-                                    {
-                                        CargarLista(miListaEmpresas);
-
-                                    }
-                                    break;
-                                case "b":
-                                case "B":
-                                    {
-
-                                    }
-                                    break;
-                                case "c":
-                                case "C":
-                                    {
-
-                                    }
-                                    break;
-
-                                default:
-                                    {
-                                        Console.Write("Error, the introduced parameter is not recognized\n The program will be restart automaticaly:");
-                                        Thread.Sleep(2000);
-                                        Console.Clear();
-                                        Main();
-                                    }
-                                    break;
-
-
-                            }
-                        }
-                        break;
-                    case "2":
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Bienvenido al proyecto A1T121");
-                            Console.WriteLine("\ta - Leer fichero por pantalla");
-                            Console.WriteLine("\t2 - Español");
-                            Console.WriteLine("\t3 - Català");
-                            Console.Write("- Escoje una función:");
-                            switch (Console.ReadLine())
-                            {
-                                //Definir caso
-                                case "a":
-                                case "A":
-                                    {
-
-                                    }
-                                    break;
-                                //Definir caso
-                                case "b":
-                                case "B":
-                                    {
-
-                                    }
-                                    break;
-                                //Definir caso
-                                case "c":
-                                case "C":
-                                    {
-
-                                    }
-                                    break;
-                                //Valor error
-                                default:
-                                    {
-                                        Console.Write("Error, El parámetro introducido no es correcto \n " +
-                                                        "El programa se reiniciará automáticamente");
-                                        Thread.Sleep(2000);
-                                        Console.Clear();
-                                        Main();
-                                    }
-                                    break;
-
-                            }
-                        }
-                        break;
-                    case "3":
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Benvingut al projecte A1T121");
-                            Console.WriteLine("\ta - Llegir fitxer");
-                            Console.WriteLine("\t2 - Español");
-                            Console.WriteLine("\t3 - Català");
-                            Console.Write("- Escull una funció");
-                            switch (Console.ReadLine())
-                            {
-                                case "a":
-                                case "A":
-                                    {
-
-                                    }
-                                    break;
-                                case "b":
-                                case "B":
-                                    {
-
-                                    }
-                                    break;
-                                case "c":
-                                case "C":
-                                    {
-
-                                    }
-                                    break;
-                                //Valor error
-                                default:
-                                    {
-                                        Console.Write("Error, El paràmetre introduit es incorrecte \n " +
-                                                        "El programa se reiniciará automáticamente");
-                                        Thread.Sleep(2000);
-                                        Console.Clear();
-                                        Main();
-                                    }
-                                    break;
-
-                            }
-                        }
-                        break;
-
-                    default:
-                        {
-                            Console.Write("Error, the introduced parameter is not recognized\n The program will be restart automaticaly:");
-                            Thread.Sleep(2000);
-                            Console.Clear();
-                            Main();
-                        }
-                        break;
-
-                }
-            }
-        }
-
-        //LISTAS//////////////////////
-        static int CargarLista(ListaEmpresas lista)
-        {
-            try
-            {
-                string path = Directory.GetCurrentDirectory();
-                StreamReader f = new StreamReader(path + "/../datos.txt");
-                int n = Convert.ToInt32(f.ReadLine());
-                int i = 0;
-                while (i < n)
-                {
-                    Empresas u = new Empresas();
-                    string linea = f.ReadLine();
-                    string[] trozos = linea.Split(',');
-                    //Error nos salimos fuera del indice de array 
-                    //Posible solucion defir el numero de empresas y los servicios
-                    u.Codigo = Convert.ToInt32(trozos[0]);
-                    u.NombreEmpresa = trozos[1];
-                    u.RepresentanteLegal = trozos[2];
-                    u.NumeroServicios = Convert.ToInt32(trozos[3]);
-
-                    int j = 0;
-
-                    while (j < u.NumeroServicios)
-                    {
-                        u.ListaServicios[j] = Convert.ToInt32(trozos[j]);
-                        j++;
-                        lista.empresas[i] = u;
-                        i = i++;
-                    }
-                }
-                lista.num = n;
-                f.Close();
-                return 0;
-            }
-            catch (FileNotFoundException)
-            {
-                return -1;
-            }
-            catch (FormatException)
-            {
-                return -2;
-            }
-        }
-
-        public class ListaEmpresas
-        {
-            public Empresas[] empresas = new Empresas[100];
-            public int num = 0;
-        }
-
-
-
-        //Lectura de empresas 
+        //Definicion de las variables que tendra cada empresa
         public class Empresas
         {
             public int Codigo;
@@ -238,11 +37,71 @@ namespace ProyectoA1T121
 
         }
 
+        //Lista de empresas
+        public class ListaEmpresas
+        {
+            public Empresas[] empresas = new Empresas[100];
+            public int num = 0;
+        }
+
+
+        //Cargar listas de las empresas que figuran en nuestro registro
+        static int CargarLista(ListaEmpresas lista)
+        {
+            try
+            {
+        
+                StreamReader f = new StreamReader("datos.txt");
+                int n = Convert.ToInt32(f.ReadLine());
+                int i = 0;
+
+                while (i < n)
+                {
+                    Empresas u = new Empresas();
+                    string linea = f.ReadLine();
+                    string[] trozos = linea.Split(',');
+                    u.Codigo = Convert.ToInt32(trozos[0]);
+                    u.NombreEmpresa = trozos[1];
+                    u.RepresentanteLegal = trozos[2];
+                    u.NumeroServicios = Convert.ToInt32(trozos[3]);
+
+                    //Lectura de datos de los servicios de nuestras empresas que estan en la linea siguiente
+                    string linea2 = f.ReadLine();
+                    string[] trozos2 = linea.Split(',');
+                    int j = 0;
+
+                    while (j < u.NumeroServicios)
+                    {
+                        u.ListaServicios[j] = Convert.ToInt32(trozos2[j]);
+                        j++;
+                    }
+                    lista.empresas[i] = u;
+                    i = i++;
+                }
+                lista.num = n;
+                f.Close();
+                return 0;
+            }
+
+            catch (FileNotFoundException)
+            {
+                return -1;
+            }
+
+            catch (FormatException)
+            {
+                return -2;
+            }
+        }
+
+        
+        //Muestra por pantalla las empresas que figuran en nuestro registro
         static void LecturaEmpresas(ListaEmpresas lista)
         {
 
             Console.WriteLine("Estas son las empresas que tenemos en nuestros datos:");
             int i = 0;
+
             while (i < lista.num)
             {
                 Empresas aux = lista.empresas[i];
@@ -252,12 +111,13 @@ namespace ProyectoA1T121
             }
         }
 
-        //Data save
+        //Escribimos nuevos datos para posteriormente salvarlos
         static void SalvarDatos(string nom_fichero, ListaEmpresas lista)
         {
             int i;
             StreamWriter f = new StreamWriter(nom_fichero);
-            f.WriteLine("{0}", lista.num); //escribimos el numero de servicios
+            //Define el numero total de servicios de la empresa que se guardara
+            f.WriteLine("{0}", lista.num); 
             i = 0;
             while (i < lista.num)
             {
@@ -269,11 +129,12 @@ namespace ProyectoA1T121
                 while (j < lista.empresas[i].NumeroServicios)
                 {
                     f.Write("{0} ", lista.empresas[i].ListaServicios[j]);
-                    // escribimos los servicios en la misma linea sin saltar de linea
+                    // Escribimos el codigo de los servicios sin saltar de linea
                     j++;
 
                 }
-                f.WriteLine(); //saltamos la linea después de los servicios de 1 aplicación
+                //Finalmente saltamos de linea para pasar a la siguiente empresa
+                f.WriteLine(); 
 
                  i++;
             }
@@ -360,9 +221,174 @@ namespace ProyectoA1T121
                     Console.WriteLine("Error");
                     Thread.Sleep(2000);
                     Console.Clear();
-                    Main();
-
                     return -1 ;
+                }
+            }
+        }
+        static void Main()
+        {
+            //Definición
+            ListaEmpresas miListaEmpresas = new ListaEmpresas();
+            int res = CargarLista(miListaEmpresas);
+            if (res == -1)
+            {
+
+                Console.WriteLine("The file was not found.");
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("File read correctly, press any button to continue.");
+                // Ask the user to choose an option.
+                Console.WriteLine("Choose your language to continue");
+                Console.Write("\t1 - English \t2 - Español \t3 - Català \n");
+                Console.WriteLine("Select:");
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Welcome to A1T121 project");
+                            Console.WriteLine("\ta - Read file");
+                            Console.WriteLine("\t2 - Fuction2");
+                            Console.WriteLine("\t3 - Function2");
+                            Console.Write("- Select an option:");
+
+                            switch (Console.ReadLine())
+                            {
+                                case "a":
+                                case "A":
+                                    {
+                                        CargarLista(miListaEmpresas);
+                                        Console.ReadKey();
+
+                                    }
+                                    break;
+                                case "b":
+                                case "B":
+                                    {
+
+                                    }
+                                    break;
+                                case "c":
+                                case "C":
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+                                        Console.Write("Error, the introduced parameter is not recognized\n The program will be restart automaticaly:");
+                                        Thread.Sleep(2000);
+                                        Console.Clear();
+                                        Main();
+                                    }
+                                    break;
+
+
+                            }
+                        }
+                        break;
+                    case "2":
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Bienvenido al proyecto A1T121");
+                            Console.WriteLine("\ta - Leer fichero por pantalla");
+                            Console.WriteLine("\t2 - Funcion2");
+                            Console.WriteLine("\t3 - Funcion2");
+                            Console.Write("- Escoje una función:");
+                            switch (Console.ReadLine())
+                            {
+                                //Definir caso
+                                case "a":
+                                case "A":
+                                    {
+                                        CargarLista(miListaEmpresas);
+                                        Console.ReadKey();
+                                    }
+                                    break;
+                                //Definir caso
+                                case "b":
+                                case "B":
+                                    {
+
+                                    }
+                                    break;
+                                //Definir caso
+                                case "c":
+                                case "C":
+                                    {
+
+                                    }
+                                    break;
+                                //Valor error
+                                default:
+                                    {
+                                        Console.Write("Error, El parámetro introducido no es correcto \n " +
+                                                        "El programa se reiniciará automáticamente");
+                                        Thread.Sleep(2000);
+                                        Console.Clear();
+                                        Main();
+                                    }
+                                    break;
+
+                            }
+                        }
+                        break;
+                    case "3":
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Benvingut al projecte A1T121");
+                            Console.WriteLine("\ta - Llegir fitxer");
+                            Console.WriteLine("\t2 - funcio2");
+                            Console.WriteLine("\t3 - funcio2");
+                            Console.Write("- Escull una funció:");
+                            switch (Console.ReadLine())
+                            {
+                                case "a":
+                                case "A":
+                                    {
+                                        CargarLista(miListaEmpresas);
+                                        Console.ReadKey();
+                                    }
+                                    break;
+                                case "b":
+                                case "B":
+                                    {
+
+                                    }
+                                    break;
+                                case "c":
+                                case "C":
+                                    {
+
+                                    }
+                                    break;
+                                //Valor error
+                                default:
+                                    {
+                                        Console.Write("Error, El paràmetre introduit es incorrecte \n " +
+                                                        "El programa es reiniciará automàticament");
+                                        Thread.Sleep(2000);
+                                        Console.Clear();
+                                        Main();
+                                    }
+                                    break;
+
+                            }
+                        }
+                        break;
+
+                    default:
+                        {
+                            Console.Write("Error, the introduced parameter is not recognized\n The program will be restart automaticaly:");
+                            Thread.Sleep(2000);
+                            Console.Clear();
+                            Main();
+                        }
+                        break;
+
                 }
             }
         }
