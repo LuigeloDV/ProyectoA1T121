@@ -222,7 +222,6 @@ namespace ProyectoA1T121
             {
                 lista.Empresas[lista.num] = aux;
                 lista.num += 1;
-
             }
 
             //Interfaz con las opciones para el usuario 
