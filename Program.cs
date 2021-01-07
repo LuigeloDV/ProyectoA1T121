@@ -26,15 +26,24 @@ namespace ProyectoA1T121
     public class Program
     {
 
-        //Definicion de las variables que tendra cada empresa
+        //Definicion de los datos que identificaran a cada empresa
         class Empresa
         {
             public int Codigo;
             public string NombreEmpresa;
             public string RepresentanteLegal;
             public int NumeroServicios;
-            public int[] ListaServicios = new int[5];
+            //Cambiar codigo
+            public Servicio[] ListaServicios = new Servicio[5];
 
+        }
+
+        class Servicio
+        {
+            public int CodigoServicio;
+            public string DescriptionServicio;
+            public string DateModifyServicio;
+            public int PrecioServicio;
         }
 
         //Lista de empresas
@@ -44,57 +53,42 @@ namespace ProyectoA1T121
             public int num = 0;
         }
 
-        //Muestra por pantalla las empresas que figuran en nuestro registro
-        static void LecturaEmpresas(ListaEmpresas lista)
+        /*      1- CargarLista
+         *      2- LecturaEmpresas 
+         *          -Mostrar por pantalla empresas  
+         *      3- BuscarEmpresa
+         *          -Buscar Empresa por servicio
+         *      4- SalvarDatos
+         *      5- AddEmpresas
+         *      6- ModificarServicios
+         *      7- Main
+         */
+        static void Welcome()
         {
+            //opciónes
+            Console.WriteLine("Bienvenido al proyecto A1T121\n");
 
-           
-            int i = 0;
-            while (i < lista.num)
-            {
-                Empresa Empresa = lista.Empresas[i];
+            Console.Write(
+                                "\ta - Mostrar Empresas por pantalla\n" +
+                                "\ts - Buscar Empresa por servicio\n" +
+                                "\td - Añadir o Eliminar Empresa \n" +
+                                "\te - Añadir o Eliminar Servicios \n " +
+                                "\tf - Guardar Datos \n\n" +
+                                "\t0 - Salir\n");
 
-                Console.WriteLine("\tEnterprise #" + (i+1));
-                Console.Write(
-                                "Codigo: {0}\n " +
-                                "Desarrollador:.................{1}\n " +
-                                "Representante Legal:...........{2}\n " +
-                                "Total Servicios:...............{3}\n ", 
-
-                                 Empresa.Codigo,
-                                 Empresa.NombreEmpresa,
-                                 Empresa.RepresentanteLegal, 
-                                 Empresa.NumeroServicios);
-
-                int j = 0;
-                while (j < Empresa.NumeroServicios)
-                {
-                    Console.Write(
-                                "ID Servicio:...................{0}\n ", Empresa.ListaServicios[j]);
-                    j++;
-                }
-                Console.WriteLine();
-                i++;
-            }
-
-            Console.WriteLine("Presione una tecla para finalizar");
-            Console.ReadLine();
+            Console.WriteLine("\n- Escoja una función:");
         }
 
 
-        //Cargar listas de las empresas que figuran en nuestro registro
+        //1.Cargar listas de las empresas que figuran en nuestro registro
         static int CargarLista(ListaEmpresas lista)
         {
             try
             {
-        
                 StreamReader F = new StreamReader("datos.txt");
                 int n = Convert.ToInt32(F.ReadLine());
-            
-                /*Cambiamos los bucles while por for para solucionar problema 
-                de retroalimentacion de la definicion de los contadores enteros*/
 
-                for (int i=0 ; i < n ; i++)
+                for (int i = 0; i < n; i++)
                 {
                     Empresa u = new Empresa();
                     string linea = F.ReadLine();
@@ -110,11 +104,11 @@ namespace ProyectoA1T121
 
                     for (int j = 0; j < u.NumeroServicios; j++)
                     {
-                        u.ListaServicios[j] = Convert.ToInt32(trozos2[j]);
+                        u.ListaServicios[j].CodigoServicio = Convert.ToInt32(trozos2[j]);
                     }
-                    
+
                     lista.Empresas[i] = u;
-                   
+
                 }
 
                 lista.num = n;
@@ -133,16 +127,110 @@ namespace ProyectoA1T121
             }
         }
 
-        
-       
+        //2.función que muestra por pantalla las empresas que tenemos almacenadas en nuestro registro
+        static void LecturaEmpresas(ListaEmpresas lista)
+        {
+            Console.WriteLine("\tTotal Empresas: {0}\n", (lista.num));
+            int i = 0;
+            while (i < lista.num)
+            {
+                Empresa Empresa = lista.Empresas[i];
 
-        //Escribimos nuevos datos para posteriormente salvarlos
+                Console.WriteLine("Empresa #{0}\n", (i + 1));
+                Console.Write(
+                                "Codigo: {0}\n " +
+                                "Empresa: {1}\n " +
+                                "Representante Legal: {2}\n " +
+                                "Total Servicios: {3}\n ",
+
+                                 Empresa.Codigo,
+                                 Empresa.NombreEmpresa,
+                                 Empresa.RepresentanteLegal,
+                                 Empresa.NumeroServicios);
+
+                int j = 0;
+                while (j < Empresa.NumeroServicios)
+                {
+                    Console.Write(
+                                "\t-ID Servicio {0}:...................{1}\n ", j + 1, Empresa.ListaServicios[j]);
+                    j++;
+                }
+                Console.WriteLine();
+                i++;
+            }
+
+        }
+
+        //3.Buscar Empresa por servicio
+        static void BuscarEmpresa(ListaEmpresas lista)
+        {
+            Console.Write("Inserte el codigo del servicio:");
+
+            try
+            {
+                int inputSearch = Convert.ToInt32(Console.ReadLine());
+
+                bool notFound = true;
+                int i = 0;
+                while (i < lista.num)
+                {
+
+                    Empresa Empresa = lista.Empresas[i];
+
+                    int j = 0;
+
+                    while (j < Empresa.NumeroServicios)
+                    {
+
+                        if (inputSearch == Empresa.ListaServicios[j].CodigoServicio)
+                        {
+                            notFound = false;
+                            Console.WriteLine("\tEmpresa #{0}\n", (i + 1));
+                            Console.WriteLine(
+                                            "Codigo: {0}\n " +
+                                            "Empresa: {1}\n " +
+                                            "Representante Legal: {2}\n " +
+                                            "Total Servicios: {3}\n ",
+
+                                                Empresa.Codigo,
+                                                Empresa.NombreEmpresa,
+                                                Empresa.RepresentanteLegal,
+                                                Empresa.NumeroServicios);
+                            int k = 0;
+                            while (k < Empresa.NumeroServicios)
+                            {
+                                Console.Write(
+                                            "\t-ID Servicio {0}:...................{1}\n ", k + 1, Empresa.ListaServicios[k]);
+                                k++;
+                            }
+                        }
+
+                        j++;
+                    }
+                    i++;
+                }
+                if (notFound)
+                {
+                    Console.WriteLine("\nNo hay ningún servicio que coincida con el que ha introducido.");
+                }
+            }
+            catch (FormatException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("El Valor introducido no tiene el formato adecuado.");
+                Console.ResetColor();
+            }
+
+
+        }
+
+        //4.Escribimos nuevos datos para posteriormente salvarlos
         static void SalvarDatos(string nom_fichero, ListaEmpresas lista)
         {
             int i;
             StreamWriter f = new StreamWriter(nom_fichero);
             //Define el numero total de servicios de la empresa que se guardara
-            f.WriteLine("{0}", lista.num); 
+            f.WriteLine("{0}", lista.num);
             i = 0;
             while (i < lista.num)
             {
@@ -159,17 +247,15 @@ namespace ProyectoA1T121
 
                 }
                 //Finalmente saltamos de linea para pasar a la siguiente empresa
-                f.WriteLine(); 
+                f.WriteLine();
 
-                 i++;
+                i++;
             }
             f.Close();
+
         }
 
-
-        
-
-        //Añade una empresa a la lista
+        //5.Añade una empresa a la lista
         static int AddEmpresas(ListaEmpresas lista, Empresa aux)
         {
             if (lista.num < 100)
@@ -190,12 +276,12 @@ namespace ProyectoA1T121
             //Insertar variable dentro de array
             if (numeroServicios > 0)
             {
-                int i= 0;
+                int i = 0;
                 int[] idServicios = new int[numeroServicios];
                 while (i <= numeroServicios)
                 {
-                    Console.WriteLine("Añada el id del servicio número {0}:", i+1);
-                     idServicios[i] = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Añada el id del servicio número {0}:", i + 1);
+                    idServicios[i] = Convert.ToInt32(Console.ReadLine());
                     //Insertar variable dentro de array
                     i++;
                 }
@@ -208,14 +294,14 @@ namespace ProyectoA1T121
                 Console.WriteLine("Error ha introducido un número de servicios no válido");
                 Thread.Sleep(2000);
                 Console.Clear();
-                Main();
+
             }
 
             return 0;
 
         }
 
-        //Dar de alta o eliminar un servicio 
+        //6.Dar de alta o eliminar un servicio 
         static int ModificarServicios(ListaEmpresas lista, Empresa aux)
         {
             if (lista.num < 100)
@@ -224,7 +310,7 @@ namespace ProyectoA1T121
                 lista.num += 1;
             }
 
-            //Interfaz con las opciones para el usuario 
+            //Interfaz con las opciónes para el usuario 
             Console.WriteLine("Ecoja la tarea que desea realizar:");
             Console.Write(
                             "\td Eliminar un servicio " +
@@ -232,133 +318,352 @@ namespace ProyectoA1T121
 
             char inputUser = Convert.ToChar(Console.ReadLine());
 
-             if(inputUser == 'd')
-                {
+            if (inputUser == 'd')
+            {
                 //Suprimir o eliminar un servicio 
 
                 return 1;
-                }
+            }
 
             else
             {
-                if(inputUser == 'a'){
+                if (inputUser == 'a')
+                {
 
                     string linea2 = Console.ReadLine();
                     string[] trozos2 = linea2.Split(",");
 
-                    
+
                     return 0;
                 }
 
-                else{
+                else
+                {
                     Console.WriteLine("Error");
-                    return -1 ;
+                    return -1;
                 }
             }
         }
 
+        static void BajaServicio(ListaEmpresas lista, int inputEmpresa)
+        {
+            try
+            {
+                int i = 0;
+                bool empresaFinded = false;
+
+                //Match del codigo de empresa 
+                while (i + 1 <= lista.num)
+                {
+                    if (lista.Empresas[i].Codigo == inputEmpresa)
+                    {
+                        empresaFinded = true;
+                        break;
+                    }
+                    i++;
+                }
+
+                if (empresaFinded)
+                {
+                    //Filtrado de la busqueda (Maximo)
+                    int l = lista.Empresas[i].NumeroServicios;
+                    //El usuario introduce el codigo del servicio a eliminar
+                    Console.WriteLine("Introduzca el Código del servicio a eliminar:");
+                    int inputService = Convert.ToInt32(Console.ReadLine());
+                    int j = 0;
+                    bool encontrado = false;
+
+                    while (j < l)
+                    {
+                        if (lista.Empresas[i].ListaServicios[j].CodigoServicio == inputService)
+                            encontrado = true;
+                        j++;
+                    }
+
+
+                    if (encontrado)
+                    {
+
+                        lista.Empresas[i].ListaServicios[j].CodigoServicio = 0;
+                        lista.Empresas[i].NumeroServicios--;
+
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\nBaja de servicio realizada con exito");
+                        Console.ResetColor();
+
+                    }
+
+                    else
+                    {
+                        while (!encontrado)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("\nEl Código del servicio introducido no existe");
+                            Console.ResetColor();
+
+                            Console.WriteLine("\nIntroduzca el Código del servicio a eliminar:");
+                            inputService = Convert.ToInt32(Console.ReadLine());
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("El codigo de la empresa no coincide con ninguna de nuestra lista.");
+                    Console.ResetColor();
+                }
+
+
+            }
+            catch (FormatException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Error en el formato de los datos introducidos");
+                Console.ResetColor();
+            }
+
+        }
+
+
+        //7.función ejecutable por defecto
         static void Main()
         {
-            //Definición
-            ListaEmpresas miListaEmpresas = new ListaEmpresas();  
+            //Llamada a la función CargarLista
+            ListaEmpresas miListaEmpresas = new ListaEmpresas();
             int res = CargarLista(miListaEmpresas);
+            //Se ejecuta el programa segun la respuesta recibida por la función 
             if (res == -1)
             {
-
-                Console.WriteLine("The file was not found.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("El archivo no se ha encontrado.");
+                Console.ResetColor();
                 Console.ReadKey();
             }
             else
             {
-                //Indica que el archo se ha leido correctamente
-                Console.ForegroundColor = ConsoleColor.Green;
-
-                Console.WriteLine("Archivo leido correctamente.");
-                Thread.Sleep(2000);
-                //Limpia la consola para que el usuario pueda continuar con la siguiente instruccion
-                Console.ResetColor();
-                Console.Clear();
-
-                //Opciones
-                Console.WriteLine("Bienvenido al proyecto A1T121\n");
-
-                Console.Write(
-                                    "\ta - Mostrar Empresas por pantalla\n" +
-                                    "\ts - Buscar Empresa por servicio\n" +
-                                    "\td - Añadir o Eliminar Empresa \n" +
-                                    "\te - Añadir o Eliminar Servicios 3\n " +
-                                    "\tf - Guardar Datos" + 
-                                    "\t0 - Salir\n");
-
-                Console.Write("\n- Escoje una función:");
-                switch (Console.ReadLine())
+                if (res == -2)
                 {
-                    //Leer archivo 
-                    case "a":
-                    case "A":
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("El archivo no tiene un formato válido.");
+                    Console.ResetColor();
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.Clear();
+
+                    //Indica que el archivo se ha leido correctamente
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Archivo leido correctamente.");
+                    Thread.Sleep(2000);
+
+                    //Limpia la consola para que el usuario pueda continuar con la siguiente instruccion
+                    Console.ResetColor();
+                    Console.Clear();
+
+                    //Llamada a la función que imprime por pantalla las opciónes para el usuario
+                    Welcome();
+
+                    while (true)
+                    {
+                        switch (Console.ReadLine())
                         {
-                            Console.Clear();
-                            Console.Write("Empresas Registradas:\n\n");
-                            LecturaEmpresas(miListaEmpresas);
+                            //MOSTRAS EMPRESAS POR PANTALLA 
+                            case "a":
+                            case "A":
+                                {
+                                    
+
+                                    Console.WriteLine();
+                                    LecturaEmpresas(miListaEmpresas);
+                                    //Se da al usuario la posibilidad de volver a seleccionar otra función 
+                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                                    Console.ReadLine();
+                                    //Console.Clear():
+                                    Welcome();
+                                               
+                                }
+                                continue;
+
+                            //BUSCAR UNA EMPRESA POR NUMERO DE SERVICIO 
+                            case "s":
+                            case "S":
+                                {
+                                   
+
+                                    Console.WriteLine();
+                                    BuscarEmpresa(miListaEmpresas);
+                                    //Se da al usuario la posibilidad de volver a seleccionar otra función 
+                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                                    Console.ReadLine();
+                                    //Console.Clear():
+                                    Welcome();
+                                    
+
+                                }
+                                continue;
+
+                            //función 3
+                            case "d":
+                            case "D":
+                                {
+
+                                }
+                                continue;
+
+                            //AÑADIR O ELIMINAR SERVICIOS DE UNA EMPRESA
+                            case "e":
+                            case "E":
+                                {
+
+                                    
+                                    try
+                                    {
+                                        //El usuario selecciona la empresa a editar
+                                        Console.WriteLine("Introduzca el Código de empresa que desea editar a eliminar:");
+                                        int inputEmpresa = Convert.ToInt32(Console.ReadLine());
+
+                                        //El usuario elige la tarea que desea realizar
+                                        Console.WriteLine("\nIndique la acción que desee realizar");
+                                        Console.WriteLine("\t1- Editar un servicio \t2 -Eliminar un servicio");
+
+                                        int inputSelected = Convert.ToInt32(Console.ReadLine());
+
+                                        //Edicion de un servicio (Cambiar)
+                                        if (inputSelected == 1)
+                                        {
+                                            //EditServicio(miListaEmpresas, inputEmpresa);
+                                        }
+
+                                        else
+                                        {
+                                            //Eliminar uno de los servicios
+                                            if (inputSelected == 2)
+                                            {
+                                                BajaServicio(miListaEmpresas, inputEmpresa);
+
+                                                Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                                                Console.ReadLine();
+                                                Welcome();
+
+                                                
+                                               
+                                            }
+                                            else
+                                            {
+                                                Console.ForegroundColor = ConsoleColor.Red;
+                                                Console.WriteLine("Error, la opción seleccionada no existe.\n");
+                                                Console.ResetColor();
+
+                                                Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                                                Console.ReadLine();
+                                                //Console.Clear():
+                                                Welcome();
+                                               
+                                            }
+
+                                        }
+                                    }
+                                    catch (FormatException)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Error en el formato de los datos introducidos.\n");
+                                        Console.ResetColor();
+
+                                        Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                                        Console.ReadLine();
+                                        //Console.Clear():
+                                        Welcome();
+                                        
+                                    }
+                                }
+                                continue;
+
+                            //función 3
+                            case "f":
+                            case "F":
+                                {
+
+                                }
+
+                                continue;
+
+                            case "0":
+                                {
+
+
+                                    try
+                                    {
+                                        Console.WriteLine("Esta seguro que desea cerrar el programa?\n");
+                                        Console.WriteLine("\ts- Si \tn- No \n");
+                                        
+                                        switch (Console.ReadLine())
+                                        {
+                                            case "s":
+                                            case "S":
+                                                {
+                                                    
+                                                }
+                                                break;
+
+                                            case "n":
+                                            case "N":
+                                                {
+                                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                                                    Console.ReadLine();
+                                                    //Console.Clear():
+                                                    Welcome();
+                                                    continue;
+                                                }
+                                                
+
+                                            default:
+                                                {
+                                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                                                    Console.ReadLine();
+                                                    //Console.Clear():
+                                                    Welcome();
+                                                    continue;
+                                                }
+                                                
+
+                                        }
+                                        break;
+
+                                    }
+                                    catch (FormatException)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Error en el formato de los datos introducidos.\n");
+                                        Console.ResetColor();
+                                        continue;
+
+                                    }
+
+                                }
+                                
+
+                            //ERROR
+                            default:
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                    Console.WriteLine("Error la función seleccionada no existe.\n");
+                                    Console.ResetColor();
+                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                                    Console.ReadLine();
+                                    //Console.Clear():
+                                    Welcome();
+                                }
+                                continue;
                         }
                         break;
-
-                    //Funcion 2
-                    case "s":
-                    case "S":
-                        {
-
-                        }
-                        break;
-
-                    //Funcion 3
-                    case "d":
-                    case "D":
-                        {
-
-                        }
-                        break;
-
-                    //Funcion 3
-                    case "e":
-                    case "E":
-                        {
-
-                        }
-                        break;
-
-                    //Funcion 3
-                    case "f":
-                    case "F":
-                        {
-
-                        }
-
-                        break;
-
-                    case "0":
-                        {
-                            //Salir
-                        }
-                        break;
-
-                    //ERROR
-                    default:
-                        {
-                            Console.Write(
-                                            "Error, El parámetro introducido no es correcto\n " +
-                                            "El programa se reiniciará automáticamente...");
-                            Thread.Sleep(2000);
-                            Console.Clear();
-                            Main();
-                        }
-                        break;
+                    }
 
                 }
-       
+               
             }
-            Console.WriteLine("Cerrando...");
-            Thread.Sleep(2000);
         }
     }
 }
