@@ -34,7 +34,7 @@ namespace ProyectoA1T121
         }
 
         //Definicion de los datos que identificaran a cada empresa
-        class Empresa
+        public class Empresa
         {
             public int Codigo;
             public string NombreEmpresa;
@@ -110,18 +110,17 @@ namespace ProyectoA1T121
                     u.RepresentanteLegal = trozos[2];
                     u.NumeroServicios = Convert.ToInt32(trozos[3]);
 
-
-
+                    int max = u.NumeroServicios - 1;
 
                     string linea2 = F.ReadLine();
                     string[] trozos2 = linea2.Split(',');
 
-                    for (int j = 0; j < u.NumeroServicios; j++)
+                    for (int j = 0; j < max; j++)
                     {
                         //Lectura de datos de los servicios de nuestras empresas que estan en la linea siguiente
                         u.ListaServicios[j].CodigoServicio = Convert.ToInt32(trozos2[ 0 + (j*6)]);
+
                         //Lectura de datos de los servicios de nuestras empresas que estan en la linea siguiente
-                        
                         u.ListaServicios[j].DescriptionServicio = trozos2[1 + (j*6) ];
                         u.ListaServicios[j].DayModifyServicio = Convert.ToInt32(trozos2[2 + (j*6)]);
                         u.ListaServicios[j].MonthModifyServicio = Convert.ToInt32(trozos2[3 + (j * 6)]);
@@ -129,6 +128,7 @@ namespace ProyectoA1T121
                         u.ListaServicios[j].PrecioServicio = Convert.ToInt32(trozos2[5 + (j * 6)]);
 
                     }
+
                     lista.Empresas[i] = u;
 
                 }
@@ -174,7 +174,7 @@ namespace ProyectoA1T121
                 while (j < Empresa.NumeroServicios)
                 {
                     Console.Write(
-                                "\t-ID Servicio {0}:...................{1}\n ", j + 1, Empresa.ListaServicios[j]);
+                                "\t-ID Servicio {0}:...................{1}\n ", j, Empresa.ListaServicios[j].CodigoServicio);
                     j++;
                 }
                 Console.WriteLine();
