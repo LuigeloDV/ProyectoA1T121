@@ -26,6 +26,13 @@ namespace ProyectoA1T121
     public class Program
     {
 
+        //Lista de empresas
+        class ListaEmpresas
+        {
+            public Empresa[] Empresas = new Empresa[100];
+            public int num = 0;
+        }
+
         //Definicion de los datos que identificaran a cada empresa
         class Empresa
         {
@@ -34,24 +41,22 @@ namespace ProyectoA1T121
             public string RepresentanteLegal;
             public int NumeroServicios;
             //Cambiar codigo
-            public Servicio[] ListaServicios = new Servicio[5];
+            public Servicio[] ListaServicios = new Servicio[6];
 
         }
 
-        class Servicio
+        public class Servicio
         {
             public int CodigoServicio;
             public string DescriptionServicio;
-            public string DateModifyServicio;
+
+            public int DayModifyServicio;
+            public int MonthModifyServicio;
+            public int YearModifyServicio;
+
             public int PrecioServicio;
         }
-
-        //Lista de empresas
-        class ListaEmpresas
-        {
-            public Empresa[] Empresas = new Empresa[100];
-            public int num = 0;
-        }
+        
 
         /*      1- CargarLista
          *      2- LecturaEmpresas 
@@ -91,22 +96,39 @@ namespace ProyectoA1T121
                 for (int i = 0; i < n; i++)
                 {
                     Empresa u = new Empresa();
+
+                    for(int aux=0; aux < 4; aux++)
+                    {
+                        u.ListaServicios[aux] = new Servicio();
+                    }
+
                     string linea = F.ReadLine();
                     string[] trozos = linea.Split(',');
+
                     u.Codigo = Convert.ToInt32(trozos[0]);
                     u.NombreEmpresa = trozos[1];
                     u.RepresentanteLegal = trozos[2];
                     u.NumeroServicios = Convert.ToInt32(trozos[3]);
 
-                    //Lectura de datos de los servicios de nuestras empresas que estan en la linea siguiente
+
+
+
                     string linea2 = F.ReadLine();
                     string[] trozos2 = linea2.Split(',');
 
                     for (int j = 0; j < u.NumeroServicios; j++)
                     {
-                        u.ListaServicios[j].CodigoServicio = Convert.ToInt32(trozos2[j]);
-                    }
+                        //Lectura de datos de los servicios de nuestras empresas que estan en la linea siguiente
+                        u.ListaServicios[j].CodigoServicio = Convert.ToInt32(trozos2[ 0 + (j*6)]);
+                        //Lectura de datos de los servicios de nuestras empresas que estan en la linea siguiente
+                        
+                        u.ListaServicios[j].DescriptionServicio = trozos2[1 + (j*6) ];
+                        u.ListaServicios[j].DayModifyServicio = Convert.ToInt32(trozos2[2 + (j*6)]);
+                        u.ListaServicios[j].MonthModifyServicio = Convert.ToInt32(trozos2[3 + (j * 6)]);
+                        u.ListaServicios[j].YearModifyServicio = Convert.ToInt32(trozos2[4 + (j * 6)]);
+                        u.ListaServicios[j].PrecioServicio = Convert.ToInt32(trozos2[5 + (j * 6)]);
 
+                    }
                     lista.Empresas[i] = u;
 
                 }
