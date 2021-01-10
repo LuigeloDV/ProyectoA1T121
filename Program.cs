@@ -56,21 +56,8 @@ namespace ProyectoA1T121
 
             public int PrecioServicio;
         }
-        
 
-        /*      1- CargarLista
-         *      2- LecturaEmpresas 
-         *          -Mostrar por pantalla empresas  
-         *      3- BuscarEmpresa
-         *          -Buscar Empresa por servicio
-         *      4- SalvarDatos
-         *      5- AddEmpresas
-         *      6- ModificarServicios
-         *      7- Main
-         */
-       
-
-        //1.Cargar listas de las empresas que figuran en nuestro registro
+        //CARGAR LISTAS
         static int CargarLista(ListaEmpresas lista)
         {
             try
@@ -133,7 +120,10 @@ namespace ProyectoA1T121
             }
         }
 
-        //2.función que muestra por pantalla las empresas que tenemos almacenadas en nuestro registro
+
+        //Funcionalidades
+
+        //1.MOSTRAR POR PANTALLA
         static void LecturaEmpresas(ListaEmpresas lista)
         {
             Console.WriteLine("\tTotal Empresas: {0}\n", (lista.num));
@@ -182,121 +172,11 @@ namespace ProyectoA1T121
 
         }
 
-        //7.Buscar Empresa por servicio
-        static void BuscarEmpresa(ListaEmpresas lista)
-        {
-            Console.Write("Inserte el codigo del servicio:");
-
-            try
-            {
-                int inputSearch = Convert.ToInt32(Console.ReadLine());
-
-                bool notFound = true;
-                int i = 0;
-
-                while (i < lista.num)
-                {
-
-                    Empresa Empresa = lista.Empresas[i];
-
-                    int j = 0;
-
-                    while (j < Empresa.NumeroServicios)
-                    {
-
-                        if (inputSearch == Empresa.ListaServicios[j].CodigoServicio)
-                        {
-                            notFound = false;
-                            Console.ForegroundColor = ConsoleColor.Blue;
-                            Console.WriteLine("\nEmpresa #{0}\n", (i + 1));
-                            Console.ResetColor();
-                            Console.Write(
-                                            "Codigo: {0}\n " +
-                                            "Empresa: {1}\n " +
-                                            "Representante Legal: {2}\n " +
-                                            "Total Servicios: {3}\n\n",
-
-                                                Empresa.Codigo,
-                                                Empresa.NombreEmpresa,
-                                                Empresa.RepresentanteLegal,
-                                                Empresa.NumeroServicios);
-
-                            //Datos de cada servicio
-                            Console.Write(
-                                        "\t-Código Servicio {0}: {1}\n " +
-                                            "\t\t Descripcion: {2}\n" +
-                                            "\t\t Fecha de ultima modificacion: {3}/{4}/{5}\n" +
-                                            "\t\t Precio: {6} Euros\n",
-
-                                                j+1,
-                                                Empresa.ListaServicios[j].CodigoServicio,
-                                                Empresa.ListaServicios[j].DescriptionServicio,
-                                                Empresa.ListaServicios[j].DayModifyServicio,
-                                                Empresa.ListaServicios[j].MonthModifyServicio,
-                                                Empresa.ListaServicios[j].YearModifyServicio,
-                                                Empresa.ListaServicios[j].PrecioServicio);
-
-                        }
-
-                        j++;
-                    }
-                    i++;
-                }
-                if (notFound)
-                {
-                    Console.WriteLine("\nNo hay ningún servicio que coincida con el que ha introducido.");
-                }
-            }
-            catch (FormatException)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("El Valor introducido no tiene el formato adecuado.");
-                Console.ResetColor();
-            }
+        //2.CONSULTAR SERVICIOS EMPRESA
 
 
-        }
-
-        //4.Escribimos nuevos datos para posteriormente salvarlos
-        static void SalvarDatos(string nom_fichero, ListaEmpresas lista)
-        {
-            int i;
-            StreamWriter f = new StreamWriter(nom_fichero);
-            //Define el numero total de servicios de la empresa que se guardara
-            f.WriteLine("{0}", lista.num);
-            i = 0;
-            while (i < lista.num)
-            {
-
-                f.WriteLine("{0},{1},{2},{3}", lista.Empresas[i].Codigo, lista.Empresas[i].NombreEmpresa, lista.Empresas[i].RepresentanteLegal,
-                    lista.Empresas[i].NumeroServicios);
-
-                int j = 0;
-                while (j < lista.Empresas[i].NumeroServicios)
-                {
-                    f.Write("{0},{1},{2},{3},{4},{5},",
-                    // Escribimos el codigo de los servicios sin saltar de linea
-                    lista.Empresas[i].ListaServicios[j].CodigoServicio,
-                    lista.Empresas[i].ListaServicios[j].DescriptionServicio,
-                    lista.Empresas[i].ListaServicios[j].DayModifyServicio,
-                    lista.Empresas[i].ListaServicios[j].MonthModifyServicio,
-                    lista.Empresas[i].ListaServicios[j].YearModifyServicio,
-                    lista.Empresas[i].ListaServicios[j].PrecioServicio);
-
-                    j++;
-                }
-
-                //Finalmente saltamos de linea para pasar a la siguiente empresa
-                f.WriteLine();
-
-                i++;
-            }
-            f.Close(); 
-        }
-
-
-        //5.Añade una empresa a la lista
-        static int AddEmpresas(ListaEmpresas lista, Empresa aux)
+        //3.DAR DE ALTA UNA EMPRESA
+        static void AddEmpresas(ListaEmpresas lista, Empresa aux)
         {
             if (lista.num < 100)
             {
@@ -305,10 +185,10 @@ namespace ProyectoA1T121
             }
 
 
-            Console.WriteLine("Ponga el código de la nueva empresa:");
-            char codigoEmpresa = Convert.ToChar(Console.ReadLine());
+            Console.WriteLine("Introduzca el código de la nueva empresa:");
+            int codigoEmpresa = Convert.ToInt32(Console.ReadLine());
             //Insertar variable dentro de array
-            Console.WriteLine("Ponga el nombre del representante de la nueva empresa:");
+            Console.WriteLine("Introduzca el nombre del representante de la nueva empresa:");
             string nombreRepresentante = Console.ReadLine();
             //Insertar variable dentro de array
             Console.WriteLine("Añada los servicios para la nueva empresa:");
@@ -341,13 +221,16 @@ namespace ProyectoA1T121
 
         }
 
-        //Funcion para dar de alto un servicios 
-        static int AddServicio(ListaEmpresas lista, Empresa aux)
+        //4. DAR DE BAJA UNA EMPRESA
+
+
+        //5.DAR DE ALTA UN SERVICIO
+        static void AddServicio(ListaEmpresas lista, Empresa aux)
         {
            
         }
 
-        //Funcion para dar de baja un servicio
+        //6.DAR DE BAJA UN SERVICIO
         static void BajaServicio(ListaEmpresas lista, int inputEmpresa)
         {
             try
@@ -429,8 +312,126 @@ namespace ProyectoA1T121
 
         }
 
+        //7.BUSCAR EMPRESA POR SERVICIO
+        static void BuscarEmpresa(ListaEmpresas lista)
+        {
+            Console.Write("Inserte el codigo del servicio:");
 
-        //Funcion que muestra el menu con la interfaz de usuario
+            try
+            {
+                int inputSearch = Convert.ToInt32(Console.ReadLine());
+
+                bool notFound = true;
+                int i = 0;
+
+                while (i < lista.num)
+                {
+
+                    Empresa Empresa = lista.Empresas[i];
+
+                    int j = 0;
+
+                    while (j < Empresa.NumeroServicios)
+                    {
+
+                        if (inputSearch == Empresa.ListaServicios[j].CodigoServicio)
+                        {
+                            notFound = false;
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.WriteLine("\nEmpresa #{0}\n", (i + 1));
+                            Console.ResetColor();
+                            Console.Write(
+                                            "Codigo: {0}\n " +
+                                            "Empresa: {1}\n " +
+                                            "Representante Legal: {2}\n " +
+                                            "Total Servicios: {3}\n\n",
+
+                                                Empresa.Codigo,
+                                                Empresa.NombreEmpresa,
+                                                Empresa.RepresentanteLegal,
+                                                Empresa.NumeroServicios);
+
+                            //Datos de cada servicio
+                            Console.Write(
+                                        "\t-Código Servicio {0}: {1}\n " +
+                                            "\t\t Descripcion: {2}\n" +
+                                            "\t\t Fecha de ultima modificacion: {3}/{4}/{5}\n" +
+                                            "\t\t Precio: {6} Euros\n",
+
+                                                j + 1,
+                                                Empresa.ListaServicios[j].CodigoServicio,
+                                                Empresa.ListaServicios[j].DescriptionServicio,
+                                                Empresa.ListaServicios[j].DayModifyServicio,
+                                                Empresa.ListaServicios[j].MonthModifyServicio,
+                                                Empresa.ListaServicios[j].YearModifyServicio,
+                                                Empresa.ListaServicios[j].PrecioServicio);
+
+                        }
+
+                        j++;
+                    }
+                    i++;
+                }
+                if (notFound)
+                {
+                    Console.WriteLine("\nNo hay ningún servicio que coincida con el que ha introducido.");
+                }
+            }
+            catch (FormatException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("El Valor introducido no tiene el formato adecuado.");
+                Console.ResetColor();
+            }
+
+
+        }
+
+        //8.FECHA ULTIMA ACTUALIZACION
+
+
+        //9.CONSULTAR SERVICIO PRECIO MAS ALTO
+
+
+        //-S SALVAR LOS DATOS
+        static void SalvarDatos(string nom_fichero, ListaEmpresas lista)
+        {
+            int i;
+            StreamWriter f = new StreamWriter(nom_fichero);
+            //Define el numero total de servicios de la empresa que se guardara
+            f.WriteLine("{0}", lista.num);
+            i = 0;
+            while (i < lista.num)
+            {
+
+                f.WriteLine("{0},{1},{2},{3}", lista.Empresas[i].Codigo, lista.Empresas[i].NombreEmpresa, lista.Empresas[i].RepresentanteLegal,
+                    lista.Empresas[i].NumeroServicios);
+
+                int j = 0;
+                while (j < lista.Empresas[i].NumeroServicios)
+                {
+                    f.Write("{0},{1},{2},{3},{4},{5},",
+                    // Escribimos el codigo de los servicios sin saltar de linea
+                    lista.Empresas[i].ListaServicios[j].CodigoServicio,
+                    lista.Empresas[i].ListaServicios[j].DescriptionServicio,
+                    lista.Empresas[i].ListaServicios[j].DayModifyServicio,
+                    lista.Empresas[i].ListaServicios[j].MonthModifyServicio,
+                    lista.Empresas[i].ListaServicios[j].YearModifyServicio,
+                    lista.Empresas[i].ListaServicios[j].PrecioServicio);
+
+                    j++;
+                }
+
+                //Finalmente saltamos de linea para pasar a la siguiente empresa
+                f.WriteLine();
+
+                i++;
+            }
+            f.Close();
+        }
+
+
+        //MENU
         static void Welcome()
         {
             //opciónes
@@ -451,10 +452,8 @@ namespace ProyectoA1T121
 
             Console.WriteLine("\n- Escoja una función:");
         }
-
-
-
-        //8.función ejecutable por defecto
+    
+        //FUNCION EJECUTABLE POR DEFECTO
         static void Main()
         {
             //Llamada a la función CargarLista
