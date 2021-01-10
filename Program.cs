@@ -142,7 +142,10 @@ namespace ProyectoA1T121
             {
                 Empresa Empresa = lista.Empresas[i];
 
-                Console.WriteLine("Empresa #{0}\n", (i + 1));
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("\nEmpresa #{0}\n", (i + 1));
+                Console.ResetColor();
+
                 Console.Write(
                                 "Codigo: {0}\n " +
                                 "Empresa: {1}\n " +
@@ -179,7 +182,7 @@ namespace ProyectoA1T121
 
         }
 
-        //3.Buscar Empresa por servicio
+        //7.Buscar Empresa por servicio
         static void BuscarEmpresa(ListaEmpresas lista)
         {
             Console.Write("Inserte el codigo del servicio:");
@@ -190,6 +193,7 @@ namespace ProyectoA1T121
 
                 bool notFound = true;
                 int i = 0;
+
                 while (i < lista.num)
                 {
 
@@ -203,32 +207,34 @@ namespace ProyectoA1T121
                         if (inputSearch == Empresa.ListaServicios[j].CodigoServicio)
                         {
                             notFound = false;
-                            Console.WriteLine("\tEmpresa #{0}\n", (i + 1));
-                            Console.WriteLine(
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.WriteLine("\nEmpresa #{0}\n", (i + 1));
+                            Console.ResetColor();
+                            Console.Write(
                                             "Codigo: {0}\n " +
                                             "Empresa: {1}\n " +
                                             "Representante Legal: {2}\n " +
-                                            "Total Servicios: {3}\n ",
+                                            "Total Servicios: {3}\n\n",
 
                                                 Empresa.Codigo,
                                                 Empresa.NombreEmpresa,
                                                 Empresa.RepresentanteLegal,
                                                 Empresa.NumeroServicios);
-                            //Datos servicio
-                          
-                                Console.Write(
-                                            "\t-ID Servicio {0}: {1}\n " +
-                                                "\t\t Descripcion: {2}\n" +
-                                                "\t\t Fecha de ultima modificacion {3}/{4}/{5}\n" +
-                                                "\t\t Precio: {6} Euros\n",
 
-                                                
-                                                 Empresa.ListaServicios[j].CodigoServicio,
-                                                 Empresa.ListaServicios[j].DescriptionServicio,
-                                                 Empresa.ListaServicios[j].DayModifyServicio,
-                                                 Empresa.ListaServicios[j].MonthModifyServicio,
-                                                 Empresa.ListaServicios[j].YearModifyServicio,
-                                                 Empresa.ListaServicios[j].PrecioServicio);
+                            //Datos de cada servicio
+                            Console.Write(
+                                        "\t-Código Servicio {0}: {1}\n " +
+                                            "\t\t Descripcion: {2}\n" +
+                                            "\t\t Fecha de ultima modificacion: {3}/{4}/{5}\n" +
+                                            "\t\t Precio: {6} Euros\n",
+
+                                                j+1,
+                                                Empresa.ListaServicios[j].CodigoServicio,
+                                                Empresa.ListaServicios[j].DescriptionServicio,
+                                                Empresa.ListaServicios[j].DayModifyServicio,
+                                                Empresa.ListaServicios[j].MonthModifyServicio,
+                                                Empresa.ListaServicios[j].YearModifyServicio,
+                                                Empresa.ListaServicios[j].PrecioServicio);
 
                         }
 
@@ -335,50 +341,13 @@ namespace ProyectoA1T121
 
         }
 
-        //6.Dar de alta o eliminar un servicio 
-        static int ModificarServicios(ListaEmpresas lista, Empresa aux)
+        //Funcion para dar de alto un servicios 
+        static int AddServicio(ListaEmpresas lista, Empresa aux)
         {
-            if (lista.num < 100)
-            {
-                lista.Empresas[lista.num] = aux;
-                lista.num += 1;
-            }
-
-            //Interfaz con las opciónes para el usuario 
-            Console.WriteLine("Ecoja la tarea que desea realizar:");
-            Console.Write(
-                            "\td Eliminar un servicio " +
-                            "\ta Añadir Servicios \n");
-
-            char inputUser = Convert.ToChar(Console.ReadLine());
-
-            if (inputUser == 'd')
-            {
-                //Suprimir o eliminar un servicio 
-
-                return 1;
-            }
-
-            else
-            {
-                if (inputUser == 'a')
-                {
-
-                    string linea2 = Console.ReadLine();
-                    string[] trozos2 = linea2.Split(",");
-
-
-                    return 0;
-                }
-
-                else
-                {
-                    Console.WriteLine("Error");
-                    return -1;
-                }
-            }
+           
         }
 
+        //Funcion para dar de baja un servicio
         static void BajaServicio(ListaEmpresas lista, int inputEmpresa)
         {
             try
@@ -461,17 +430,23 @@ namespace ProyectoA1T121
         }
 
 
+        //Funcion que muestra el menu con la interfaz de usuario
         static void Welcome()
         {
             //opciónes
-            Console.WriteLine("Bienvenido al proyecto A1T121\n");
+            Console.WriteLine("Menú principal del proyecto A1T121\n");
 
-            Console.Write(
-                                "\ta - Mostrar Empresas por pantalla\n" +
-                                "\ts - Buscar Empresa por servicio\n" +
-                                "\td - Añadir o Eliminar Empresa \n" +
-                                "\te - Añadir o Eliminar Servicios \n " +
-                                "\tf - Guardar Datos \n\n" +
+            Console.Write(      
+                
+                                "\t1 - Lista Empresas (Mostrar Empresas por pantalla)\n" +
+                                "\t2 - Consulta Servicios (Buscar Empresa imprimir servicios)\n" +
+                                "\t3 - Añadir Empresa \n" +
+                                "\t4 - Eliminar Empresa \n" +
+                                "\t5 - Añadir Servicio \n " +
+                                "\t6 - Eliminar Servicio \n " +
+                                "\t7 - Buscar Empresa (Buscar Empresa por servicio)\n" +
+                                "\tS - Guardar Datos \n\n" +
+
                                 "\t0 - Salir\n");
 
             Console.WriteLine("\n- Escoja una función:");
@@ -525,119 +500,79 @@ namespace ProyectoA1T121
                         switch (Console.ReadLine())
                         {
                             //MOSTRAS EMPRESAS POR PANTALLA 
-                            case "a":
-                            case "A":
+                            case "1":
                                 {
                                     
 
                                     Console.WriteLine();
                                     LecturaEmpresas(miListaEmpresas);
-                                    //Se da al usuario la posibilidad de volver a seleccionar otra función 
-                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                    Console.ReadLine();
-                                    //Console.Clear():
-                                    Welcome();
-         
+
                                 }
-                                //**CORREGIR
+
                                 break;
 
-                            //BUSCAR UNA EMPRESA POR NUMERO DE SERVICIO 
-                            case "s":
-                            case "S":
+                            
+                            case "2":
                                 {
                                    
 
-                                    Console.WriteLine();
-                                    BuscarEmpresa(miListaEmpresas);
-                                    //Se da al usuario la posibilidad de volver a seleccionar otra función 
-                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                    Console.ReadLine();
-                                    //Console.Clear():
-                                    Welcome();
+                                   
                                     
                                 }
                                 break;
 
                             //función 3
-                            case "d":
-                            case "D":
+                            case "3":
                                 {
 
                                 }
                                 break;
 
-                            //AÑADIR O ELIMINAR SERVICIOS DE UNA EMPRESA
-                            case "e":
-                            case "E":
+                            //ELIMINAR SERVICIOS DE UNA EMPRESA
+                            case "4":
                                 {
 
-                                    
                                     try
                                     {
                                         //El usuario selecciona la empresa a editar
-                                        Console.WriteLine("Introduzca el Código de empresa que desea editar a eliminar:");
+                                        Console.WriteLine("Introduzca el Código de empresa que desea eliminar:");
                                         int inputEmpresa = Convert.ToInt32(Console.ReadLine());
 
-                                        //El usuario elige la tarea que desea realizar
-                                        Console.WriteLine("\nIndique la acción que desee realizar");
-                                        Console.WriteLine("\t1- Editar un servicio \t2 -Eliminar un servicio");
-
-                                        int inputSelected = Convert.ToInt32(Console.ReadLine());
-
-                                        //Edicion de un servicio (Cambiar)
-                                        if (inputSelected == 1)
-                                        {
-                                            //EditServicio(miListaEmpresas, inputEmpresa);
-                                        }
-
-                                        else
-                                        {
-                                            //Eliminar uno de los servicios
-                                            if (inputSelected == 2)
-                                            {
-                                                BajaServicio(miListaEmpresas, inputEmpresa);
-
-                                                Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                Console.ReadLine();
-                                                Welcome();
-
-                                                
-                                               
-                                            }
-                                            else
-                                            {
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.WriteLine("Error, la opción seleccionada no existe.\n");
-                                                Console.ResetColor();
-
-                                                Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                Console.ReadLine();
-                                                //Console.Clear():
-                                                Welcome();
-                                               
-                                            }
-
-                                        }
+                                        BajaServicio(miListaEmpresas, inputEmpresa);
+   
                                     }
                                     catch (FormatException)
                                     {
                                         Console.ForegroundColor = ConsoleColor.Red;
                                         Console.WriteLine("Error en el formato de los datos introducidos.\n");
                                         Console.ResetColor();
-
-                                        Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                        Console.ReadLine();
-                                        //Console.Clear():
-                                        Welcome();
                                         
                                     }
                                 }
                                 break;
 
-                            //función 3
-                            case "f":
-                            case "F":
+
+                            //7---BUSCAR UNA EMPRESA POR NUMERO DE SERVICIO 
+                            case "7":
+                                {
+                                    Console.WriteLine();
+                                    BuscarEmpresa(miListaEmpresas);
+                                }
+                                break;
+                            //8- 
+                            case "8":
+                                {
+
+
+                         
+
+                                }
+                                break;
+
+
+                            //S- Salvar Datos
+                            case "s":
+                            case "S":
                                 {
 
                                     try
@@ -646,167 +581,163 @@ namespace ProyectoA1T121
                                         string inputFileName;
                                         bool inputFileNameOk = false;
 
-                                        
-                                            Console.WriteLine("Por favor seleccione una opcion:");
-                                            Console.Write(
-                                                   "\t1 - Sobreescribir el documento\n" +
-                                                   "\t2 - Introducir el nombre del documento\n" +
-                                                   "\t3 - Guardar el documento con la fecha actual \n" +
 
-                                                   "\t0 - Salir\n");
-                                            switch (Console.ReadLine())
-                                            {
-                                                case "1":
-                                                    {
-                                                        inputFileName = "datos.txt";
-                                                        Console.WriteLine("Esta seguro de que desea guardar las modificaciones hechas?");
-                                                        Console.WriteLine("\ts - Si \tn - No");
-                                                        inputSaveConfirmation = Convert.ToChar(Console.ReadLine());
+                                        Console.WriteLine("Por favor seleccione una opcion:");
+                                        Console.Write(
+                                               "\t1 - Sobreescribir el documento\n" +
+                                               "\t2 - Introducir el nombre del documento\n" +
+                                               "\t3 - Guardar el documento con la fecha actual \n" +
+
+                                               "\t0 - Salir\n");
+
+                                        switch (Console.ReadLine())
+                                        {
+                                            //Sobreescribir el documento
+                                            case "1":
+                                                {
+                                                    //Declaracion del nombre igual al del fichero que se carga
+                                                    inputFileName = "datos.txt";
+
+                                                    //Opcion de confirmacion para el usuario 
+                                                    Console.WriteLine("Está seguro de que desea guardar las modificaciones hechas?");
+                                                    Console.WriteLine("\ts - Si \tn - No");
+                                                    inputSaveConfirmation = Convert.ToChar(Console.ReadLine());
+
+                                                    //Funcion segun la introccion del usuario
                                                     if (inputSaveConfirmation == 's')
                                                     {
+                                                        //Si se quiere guardar el fichero 
                                                         SalvarDatos(inputFileName, miListaEmpresas);
                                                     }
                                                     else
                                                     {
                                                         if (inputSaveConfirmation == 'n')
                                                         {
-                                                            Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                            Console.ReadLine();
-                                                            //Console.Clear():
-                                                            Welcome();
+                                                            //Si no se quiere guardar el fichero
+                                                            Console.WriteLine("\nNo se han guardado los datos");
                                                         }
                                                         else
                                                         {
-                                                            Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                            Console.ReadLine();
-                                                            //Console.Clear():
-                                                            Welcome();
+                                                            Console.WriteLine("\nError: No se han guardado los datos");
                                                         }
                                                     }
-                                                       
-                                                    }
-                                                    break;
 
-                                                case "2":
+                                                }
+                                                break;
+
+                                            //Guardar el documento con el nombre introducido por el usuario
+                                            case "2":
+                                                {
+                                                    //Se entra en un bucle hasta que el usuario introduzca un nombre correcto 
+                                                    while (!inputFileNameOk)
                                                     {
-                                                        //Se entra en un bucle hasta que el usuario introduzca un nombre correcto 
-                                                        while (!inputFileNameOk)
+                                                        bool inputInvalidChars = false;
+                                                        bool inputInvalidExtension = false;
+
+                                                        //Instrucciones para el usuario
+                                                        Console.WriteLine("Por favor introduzca un nombre para su documento ");
+                                                        Console.ForegroundColor = ConsoleColor.Yellow;
+                                                        Console.WriteLine("\tEjemplo: nombre_archivo (No introduzca la extension del archivo)");
+                                                        Console.ResetColor();
+                                                        //Se recoje el valor del nombre introducido por el usuario y se añade la extensión
+                                                        inputFileName = Console.ReadLine();
+
+                                                        //Se limita el nombre a no contener caracteres invalidos con la funcion siguiente y el punto para evitar las extensiones
+                                                        inputInvalidChars = inputFileName.Any(Path.GetInvalidFileNameChars().Contains);
+                                                        inputInvalidExtension = inputFileName.Contains(".");
+
+                                                        if (inputInvalidChars || inputInvalidExtension)
                                                         {
-                                                            bool inputInvalidChars = false;
-                                                            bool inputInvalidExtension = false;
-
-                                                            //Instrucciones para el usuario
-                                                            Console.WriteLine("Por favor introduzca un nombre para su documento ");
-                                                            Console.ForegroundColor = ConsoleColor.Yellow;
-                                                            Console.WriteLine("\tEjemplo: nombre_archivo (No intoduzca la extension del archivo)");
+                                                            Console.ForegroundColor = ConsoleColor.Red;
+                                                            Console.WriteLine("\nNo se a podido guardar el documento.");
                                                             Console.ResetColor();
-                                                            //Se recoje el valor del nombre introducido por el usuario y se añade la extensión
-                                                            inputFileName = Console.ReadLine();
+                                                            Console.WriteLine("\tError: El nombre del fichero contiene caracteres no validos.");
+                                                        }
+                                                        else
+                                                        {
+                                                            if (!inputInvalidChars && !inputInvalidExtension)
+                                                            {
+                                                                Console.WriteLine("Esta seguro de que desea guardar las modificaciones hechas?");
+                                                                Console.WriteLine("\ts - Si \tn - No");
+                                                                inputSaveConfirmation = Convert.ToChar(Console.ReadLine());
+                                                                if (inputSaveConfirmation == 's')
+                                                                {
+                                                                    string inputFileNameFinal = inputFileName + ".txt";
+                                                                    SalvarDatos(inputFileNameFinal, miListaEmpresas);
+                                                                    Console.ForegroundColor = ConsoleColor.Green;
+                                                                    Console.WriteLine("\nEl fichero se ha guardado correctamente.");
+                                                                    Console.ResetColor();
+                                                                    //Salimos del bucle
+                                                                    inputFileNameOk = true;
+                                                                    SalvarDatos(inputFileName, miListaEmpresas);
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (inputSaveConfirmation == 'n')
+                                                                    {
+                                                                        //Salimos del bucle
+                                                                        inputFileNameOk = true;
 
-                                                            //Se limita el nombre a no contener caracteres invalidos con la funcion siguiente y el punto para evitar las extensiones
-                                                            inputInvalidChars = inputFileName.Any(Path.GetInvalidFileNameChars().Contains);
-                                                            inputInvalidExtension = inputFileName.Contains(".");
-
-                                                            if (inputInvalidChars || inputInvalidExtension)
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        //Salimos del bucle
+                                                                        inputFileNameOk = true;
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
                                                             {
                                                                 Console.ForegroundColor = ConsoleColor.Red;
                                                                 Console.WriteLine("\nNo se a podido guardar el documento.");
                                                                 Console.ResetColor();
-                                                                Console.WriteLine("\tError: El nombre del fichero contiene caracteres no validos.");
-
-                                                              
-                                                            }
-                                                            else
-                                                            {
-                                                                if (!inputInvalidChars && !inputInvalidExtension)
-                                                                {
-                                                                    Console.WriteLine("Esta seguro de que desea guardar las modificaciones hechas?");
-                                                                    Console.WriteLine("\ts - Si \tn - No");
-                                                                    inputSaveConfirmation = Convert.ToChar(Console.ReadLine());
-                                                                    if (inputSaveConfirmation == 's')
-                                                                    {
-                                                                        string inputFileNameFinal = inputFileName + ".txt";
-                                                                        SalvarDatos(inputFileNameFinal, miListaEmpresas);
-                                                                        Console.ForegroundColor = ConsoleColor.Green;
-                                                                        Console.WriteLine("\nEl fichero se ha guardado correctamente.");
-                                                                        Console.ResetColor();
-                                                                        //Salimos del bucle
-                                                                        inputFileNameOk = true;
-                                                                        SalvarDatos(inputFileName, miListaEmpresas);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        if (inputSaveConfirmation == 'n')
-                                                                        {
-                                                                            //Salimos del bucle
-                                                                            inputFileNameOk = true;
-                                                                       
-                                                                        
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            //Salimos del bucle
-                                                                            inputFileNameOk = true;
-                                                                        }
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    Console.ForegroundColor = ConsoleColor.Red;
-                                                                    Console.WriteLine("\nNo se a podido guardar el documento.");
-                                                                    Console.ResetColor();
-                                                                    Console.WriteLine("\tError: Ha habido un error mientras se intentaba guardar el documento");
-                                                                }
+                                                                Console.WriteLine("\tError: Ha habido un error inesperado mientras se intentaba guardar el documento");
                                                             }
                                                         }
-                                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                    Console.ReadLine();
-                                                    //Console.Clear():
-                                                    Welcome();
                                                     }
-                                                    break;
 
-                                                case "3":
-                                                    {
-                                                        Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                        Console.ReadLine();
-                                                        //Console.Clear():
-                                                        Welcome();
-                                                    }
-                                                    break;
+                                                }
+                                                break;
 
-                                                case "0":
-                                                    {
-                                                        Welcome();
-                                                    }
-                                                    break;
+                                            //Guardar el documento con formato de fecha
+                                            case "3":
+                                                {
 
-                                                default:
-                                                    {
-                                                        Console.ForegroundColor = ConsoleColor.Red;
-                                                        Console.WriteLine("Error la función seleccionada no existe.\n");
-                                                        Console.ResetColor();
-                                                        Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                        Console.ReadLine();
-                                                        //Console.Clear():
-                                                        Welcome();
-                                                    }
-                                                    break;
+                                                }
+                                                break;
+                                            //Salir
+                                            case "0":
+                                                {
+                                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                                    Console.WriteLine("\n¡Atención! Ha salido sin guardar el archivo");
+                                                    Console.ResetColor();
+                                                }
+                                                break;
 
-                                            }
-                                            break;
-                                           
-                                        
+                                            default:
+                                                {
+                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                    Console.WriteLine("Error la función seleccionada no existe.\n");
+                                                    Console.ResetColor();
+
+                                                }
+                                                break;
+
+                                        }
+                                        break;
+
+
                                     }
-                                    catch
+                                    catch (FormatException)
                                     {
-
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("Error en el formato de los datos introducidos.\n");
+                                        Console.ResetColor();
                                     }
-
                                 }
 
                                 break;
-
+                            //0-SALIR 
                             case "0":
                                 {
 
@@ -828,19 +759,13 @@ namespace ProyectoA1T121
                                             case "n":
                                             case "N":
                                                 {
-                                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                    Console.ReadLine();
-                                                    //Console.Clear():
-                                                    Welcome();
+                                                    exit = false;
                                                 }
                                                 break;
 
                                             default:
                                                 {
-                                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                                    Console.ReadLine();
-                                                    //Console.Clear():
-                                                    Welcome();
+                                                    exit = false;
                                                 }
                                                 break;
 
@@ -865,13 +790,17 @@ namespace ProyectoA1T121
                                     Console.ForegroundColor = ConsoleColor.Red;
                                     Console.WriteLine("Error la función seleccionada no existe.\n");
                                     Console.ResetColor();
-                                    Console.WriteLine("\nPresione una tecla para volver al menú principal");
-                                    Console.ReadLine();
-                                    //Console.Clear():
-                                    Welcome();
+                                   
                                 }
                                 break;
                         }
+                        //Volver al menu principal
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Console.WriteLine("\nPresione una tecla para volver al menú principal");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        //Console.Clear():
+                        Welcome();
                     }
 
                 }
