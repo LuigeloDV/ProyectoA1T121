@@ -217,8 +217,6 @@ namespace ProyectoA1T121
 
             }
 
-            return 0;
-
         }
 
         //4. DAR DE BAJA UNA EMPRESA
