@@ -246,51 +246,73 @@ namespace ProyectoA1T121
         }
 
         //3.DAR DE ALTA UNA EMPRESA
-        static void AddEmpresas(ListaEmpresas lista)
+        static int AddEmpresas(ListaEmpresas lista, Empresa n)
+
         {
-           /* if (lista.num < 100)
+            if (lista.num < 100)
             {
-                lista.Empresas[lista.num] = aux;
-                lista.num += 1;
-            }
 
-
-            Console.WriteLine("Introduzca el código de la nueva empresa:");
-            int codigoEmpresa = Convert.ToInt32(Console.ReadLine());
-            //Insertar variable dentro de array
-            Console.WriteLine("Introduzca el nombre del representante de la nueva empresa:");
-            string nombreRepresentante = Console.ReadLine();
-            //Insertar variable dentro de array
-            Console.WriteLine("Añada los servicios para la nueva empresa:");
-            int numeroServicios = Convert.ToInt32(Console.ReadLine());
-            //Insertar variable dentro de array
-            if (numeroServicios > 0)
-            {
-                int i = 0;
-                int[] idServicios = new int[numeroServicios];
-                while (i <= numeroServicios)
-                {
-                    Console.WriteLine("Añada el id del servicio número {0}:", i + 1);
-                    idServicios[i] = Convert.ToInt32(Console.ReadLine());
-                    //Insertar variable dentro de array
-                    i++;
-                }
-                //Insertar array dentro del fichero datos.txt teniendo 
-                //en cuenta que no puede repetirse el codigo de empresa
-                Console.WriteLine("Su empresa ha sido añadida correctamente");
+                lista.Empresas[lista.num] = n;
+                lista.num = lista.num + 1;
+                return 0; //Todo OK
             }
             else
-            {
-                Console.WriteLine("Error ha introducido un número de servicios no válido");
-
-            }
-           */
+                return -1; //La lista esta llena
         }
 
         //4. DAR DE BAJA UNA EMPRESA
-        static void DeleteEmpresas(ListaEmpresas lista)
+        static void DeleteEmpresas(ListaEmpresas lista, int aux)
         {
+            int i = 0;
+            try
+            {
+                bool encontrado = false;
+                while ((i < lista.num) && (!encontrado))
+                {
+                    if (lista.Empresas[i].Codigo == aux)
+                    {
+                        if (i == lista.num - 1)
+                        {
+                            lista.num--;
+                        }
+                        else
+                        {
+                            while (i < lista.num)
+                            {
+                                lista.Empresas[i] = lista.Empresas[i + 1];
+                                i++;
+                            }
+                            lista.num--;
+                        }
+                        encontrado = true;
+                    }
+                    i++;
+                }
 
+                if (encontrado)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nLa empresa ha sido eliminada");
+                    Console.ResetColor();
+
+                }
+                else
+                {
+                    if (!encontrado)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("\nEl codigo de la empresa no existe");
+                        Console.ResetColor();
+                    }
+                       
+                }
+            }
+            catch (FormatException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nError en el formato de los datos introducidos");
+                Console.ResetColor();
+            }
         }
 
         //5.DAR DE ALTA UN SERVICIO
@@ -546,6 +568,7 @@ namespace ProyectoA1T121
                     j++;
                 }
                 j--;
+
                 //Actualizamos la última fecha 
                 Console.WriteLine("Introduce la fecha actual (dd mm aaaa):");
                 string linea = Console.ReadLine();
@@ -588,7 +611,6 @@ namespace ProyectoA1T121
                 Console.ResetColor();
             }
         }
-
 
         //9.BUSCAR SERVICIO MAS COSTOS
         static void BuscarCoste(ListaEmpresas lista)
@@ -690,6 +712,8 @@ namespace ProyectoA1T121
         //FUNCION EJECUTABLE POR DEFECTO
         static void Main()
         {
+            //Borramos cualquier formato de consola previo guardado en cache
+            Console.ResetColor();
             //Llamada a la función CargarLista
             ListaEmpresas miListaEmpresas = new ListaEmpresas();
             int res = CargarLista(miListaEmpresas);
@@ -750,16 +774,126 @@ namespace ProyectoA1T121
                             //AÑADIR EMPRESA
                             case "3":
                                 {
-                                    AddEmpresas(miListaEmpresas);
+                                    try
+                                    {
+                                        Console.WriteLine("Escribe los datos de la empresa, siguiendo el patron de abajo");
+                                        Console.ForegroundColor = ConsoleColor.Yellow;
+                                        Console.WriteLine("\tCódigo,Nombre de la Empresa,Nombre del Representante,Número de servicios\n");
+                                        Console.ResetColor();
+                                        string linea = Console.ReadLine();
+                                        string[] trozos = linea.Split(',');
+                                        Empresa nuevo = new Empresa();
+                                        int n = 0;
+                                        while (n < 4)
+                                        {
+                                            nuevo.ListaServicios[n] = new Servicio();
+                                            n++;
+                                        }
+
+                                        if (trozos.Length > 3)
+                                        {
+                                            if (trozos[0] != " ")
+                                            {
+                                                nuevo.Codigo = Convert.ToInt32(trozos[0]);
+
+                                                if (trozos[1] != " ")
+                                                {
+                                                    nuevo.NombreEmpresa = trozos[1];
+                                                    if (trozos[2] != " ")
+                                                    {
+                                                        nuevo.RepresentanteLegal = trozos[2];
+                                                        if (trozos[3] != " ")
+                                                        {
+                                                            nuevo.NumeroServicios = Convert.ToInt32(trozos[3]);
+
+                                                            //Instrucciones segun numero de servicios
+                                                            if(nuevo.NumeroServicios >0 )
+                                                            {
+                                                                Console.WriteLine("Escribe los datos de los servicios a añadir, siguiendo el patron de abajo");
+                                                            }
+                                                            else
+                                                            {
+                                                                Console.WriteLine("Escribe los datos del servicio a añadir, siguiendo el patron de abajo");
+                                                            }
+                                                            Console.ForegroundColor = ConsoleColor.Yellow;
+                                                            Console.WriteLine("\t Código 1,Descripción 1,Dia 1,Mes 1,Año 1,Precio 1,Código 2,Descripción 2,Dia 2,Mes 2,Año 2,Precio 2,...");
+                                                            Console.ResetColor();
+
+                                                            string linea2 = Console.ReadLine();
+                                                            string[] trozos2 = linea2.Split(',');
+                                                            int j = 0;
+                                                            bool errorDatosServicios = false;
+                                                            while (j < nuevo.NumeroServicios && !errorDatosServicios)
+                                                            {
+                                                                //Comprobar que existan todos los datos de los servicios
+                                                                if (trozos2.Length >= (6*nuevo.NumeroServicios))
+                                                                {
+                                                                    nuevo.ListaServicios[j].CodigoServicio = Convert.ToInt32(trozos2[0 + (j * 6)]);
+                                                                    nuevo.ListaServicios[j].DescriptionServicio = trozos2[1 + (j * 6)];
+                                                                    nuevo.ListaServicios[j].DayModifyServicio = Convert.ToInt32(trozos2[2 + (j * 6)]);
+                                                                    nuevo.ListaServicios[j].MonthModifyServicio = Convert.ToInt32(trozos2[3 + (j * 6)]);
+                                                                    nuevo.ListaServicios[j].YearModifyServicio = Convert.ToInt32(trozos2[4 + (j * 6)]);
+                                                                    nuevo.ListaServicios[j].PrecioServicio = Convert.ToInt32(trozos2[3 + (j * 6)]);
+                                                                    j++;
+
+                                                                    AddEmpresas(miListaEmpresas, nuevo);
+                                                                }
+                                                                else 
+                                                                {
+                                                                    if (trozos2.Length < (6 * nuevo.NumeroServicios))
+                                                                        errorDatosServicios = true;
+                                                                }
+                                                            }
+                                                            if (!errorDatosServicios)
+                                                            {
+                                                                Console.ForegroundColor = ConsoleColor.Green;
+                                                                Console.WriteLine("La Empresa y sus respectivos servicios se han añadido correctamente");
+                                                                Console.ResetColor();
+                                                            }
+                                                            else
+                                                            {
+                                                                if (errorDatosServicios) 
+                                                                { 
+                                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                                    Console.WriteLine("Error: Faltaron datos de los servicios por introducir.");
+                                                                    Console.ResetColor();
+                                                                }
+                                                            }
+                                                           
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.WriteLine("Error: Faltaron datos de la empresa por introducir.");
+                                            Console.ResetColor();
+                                        }
+
+                                        
+                                    }
+                                    catch (FormatException)
+                                    {
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("El Valor introducido no tiene el formato adecuado.");
+                                        Console.ResetColor();
+                                    }
                                 }
                                 break;
+
 
                             //ELIMINAR EMPRESA 
                             case "4":
                                 {
-                                    DeleteEmpresas(miListaEmpresas);
+                                        int aux;
+                                        Console.WriteLine("Introduce el Codigo para eliminar la empresa:");
+                                        aux = Convert.ToInt32(Console.ReadLine());
+                                        DeleteEmpresas(miListaEmpresas, aux);
+
                                 }
-                                break;
+                                    break;
 
                             //ELIMINAR SERVICIOS DE UNA EMPRESA
                             case "5":
